@@ -5,7 +5,6 @@ import {
   DashboardOutlined,
 } from '@ant-design/icons';
 import { Button, Layout as AntLayout, Menu, theme } from 'antd';
-import { NavLink } from 'react-router-dom';
 
 const { Header, Sider, Content } = AntLayout;
 
@@ -22,7 +21,7 @@ const LayoutUser: React.FC<LayoutProps> = ({ children }) => {
   return (
     <AntLayout style={{ height: '100vh' }}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="flex justify-center items-center my-2">
+      <div className="flex justify-center items-center my-2">
           <img
             src="https://media.istockphoto.com/id/1291582566/id/vektor/logo-desain-vektor-roti-dan-kue-roti.jpg?s=612x612&w=0&k=20&c=u12ry-rhywQj6Wf3xQUY6F8vV8DttZVHXR-waxOFjcc="
             alt="Logo"
@@ -34,11 +33,14 @@ const LayoutUser: React.FC<LayoutProps> = ({ children }) => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['1']}
-        >
-          <Menu.Item key="1" icon={<DashboardOutlined />}>
-            <NavLink to="/">Dashboard</NavLink>
-          </Menu.Item>
-        </Menu>
+          items={[
+            {
+              key: '1',
+              icon: <DashboardOutlined />,
+              label: 'Dashboard',
+            },
+          ]}
+        />
       </Sider>
       <AntLayout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
