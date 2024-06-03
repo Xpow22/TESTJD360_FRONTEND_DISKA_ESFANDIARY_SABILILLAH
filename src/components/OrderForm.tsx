@@ -59,7 +59,10 @@ const OrderForm: React.FC<OrderFormProps> = ({ addOrder, editOrder, closeModal }
       <Form.Item
         name="phone"
         label="Phone"
-        rules={[{ required: true, message: 'Please enter the phone number' }]}
+        rules={[
+          { required: true, message: 'Please enter the phone number' },
+          { pattern: /^\d+$/, message: 'Please enter a valid phone number' }
+        ]}
       >
         <Input />
       </Form.Item>
