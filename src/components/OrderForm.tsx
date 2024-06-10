@@ -20,17 +20,18 @@ interface Order {
 const OrderForm: React.FC<OrderFormProps> = ({ addOrder, editOrder, closeModal }) => {
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    if (editOrder) {
-      form.setFieldsValue(editOrder);
-    }
-  }, [editOrder, form]);
-
   const onFinish = (values: Order) => {
     addOrder({ ...values, key: editOrder?.key || `${Date.now()}` });
     closeModal();
     form.resetFields();
+    const ordersFromStorage = JSON.parse(localStorage.getItem('orders') || '[]');
+    const updatedOrders = [...ordersFromStorage, { ...values, key: editOrder?.key || `${Date.now()}` }];
+    localStorage.setItem('orders', JSON.stringify(updatedOrders));
   };
+  useEffect(() => {
+    const ordersFromStorage = JSON.parse(localStorage.getItem('orders') || '[]');
+    form.setFieldsValue(ordersFromStorage.find((order: Order) => order.key === editOrder?.key));
+  }, [editOrder, form]);
 
   return (
     <Form
@@ -40,8 +41,8 @@ const OrderForm: React.FC<OrderFormProps> = ({ addOrder, editOrder, closeModal }
     >
       <Form.Item
         name="source"
-        label="Source"
-        rules={[{ required: true, message: 'Please select the source' }]}
+        label="Sumber Pesanan"
+        rules={[{ required: true, message: 'Please select the order source' }]}
       >
         <Select>
           <Select.Option value="Whatsapp">Whatsapp</Select.Option>
@@ -58,7 +59,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ addOrder, editOrder, closeModal }
       </Form.Item>
       <Form.Item
         name="phone"
-        label="Phone"
+        label="Nomor HP"
         rules={[
           { required: true, message: 'Please enter the phone number' },
           { pattern: /^\d+$/, message: 'Please enter a valid phone number' }
@@ -74,14 +75,14 @@ const OrderForm: React.FC<OrderFormProps> = ({ addOrder, editOrder, closeModal }
       </Form.Item>
       <Form.Item
         name="quantity"
-        label="Quantity"
+        label="Jumlah Roti"
         rules={[{ required: true, message: 'Please enter the quantity' }]}
       >
         <Input type="number" min={1} />
       </Form.Item>
       <Form.Item
         name="notes"
-        label="Notes"
+        label="Keterangan"
       >
         <Input.TextArea />
       </Form.Item>
